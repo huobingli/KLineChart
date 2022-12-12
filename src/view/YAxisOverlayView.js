@@ -20,10 +20,11 @@ import { renderStrokeFillRoundRect } from '../renderer/rect'
 import { renderText } from '../renderer/text'
 
 export default class YAxisOverlayView extends View {
-  constructor (container, chartStore, yAxis, paneId) {
+  constructor (container, chartStore, yAxis, paneId, yCustomAxis) {
     super(container, chartStore)
     this._yAxis = yAxis
     this._paneId = paneId
+    this._yCustomAxis = yCustomAxis
   }
 
   _draw () {

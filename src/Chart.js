@@ -770,4 +770,11 @@ export default class Chart {
   destroy () {
     this._chartPane.destroy()
   }
+
+  /**
+   * 设置Y0轴
+   */
+  setYAxisBegin () {
+    // this._chartPane._panes
+  }
 }

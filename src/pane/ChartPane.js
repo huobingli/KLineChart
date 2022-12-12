@@ -206,8 +206,13 @@ export default class ChartPane {
       let shouldMeasureWidth = false
       this._panes.forEach((pane) => {
         const should = pane.yAxis().computeAxis()
+        const shouldCustom = pane.yCustomAxis().computeAxis()
         if (should) {
           shouldMeasureWidth = should
+        }
+
+        if (shouldCustom) {
+          shouldMeasureWidth = shouldCustom
         }
       })
       this.adjustPaneViewport(false, shouldMeasureWidth, true)
@@ -278,6 +283,8 @@ export default class ChartPane {
   _measurePaneWidth () {
     const styleOptions = this._chartStore.styleOptions()
     const yAxisOptions = styleOptions.yAxis
+    // if (yAxisOptions.show)
+    // {
     const isYAxisLeft = yAxisOptions.position === YAxisPosition.LEFT
     const isOutside = !yAxisOptions.inside
     const paneWidth = this._container.offsetWidth
@@ -354,6 +361,10 @@ export default class ChartPane {
         const adjust = pane.yAxis().computeAxis(shouldForceComputeAxis)
         if (!isAdjust) {
           isAdjust = adjust
+        }
+        const adjustCustom = pane.yCustomAxis().computeAxis(shouldForceComputeAxis)
+        if (!isAdjust) {
+          isAdjust = adjustCustom
         }
       })
     }

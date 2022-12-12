@@ -18,10 +18,10 @@ import TechnicalIndicatorOverlayView from '../view/TechnicalIndicatorOverlayView
 
 export default class TechnicalIndicatorWidget extends Widget {
   _createMainView (container, props) {
-    return new TechnicalIndicatorView(container, props.chartStore, props.xAxis, props.yAxis, props.paneId)
+    return new TechnicalIndicatorView(container, props.chartStore, props.xAxis, props.yAxis, props.paneId, props.yCustomAxis)
   }
 
   _createOverlayView (container, props) {
-    return new TechnicalIndicatorOverlayView(container, props.chartStore, props.xAxis, props.yAxis, props.paneId)
+    return new TechnicalIndicatorOverlayView(container, props.chartStore, props.xAxis, props.yAxis, props.paneId, props.yCustomAxis)
   }
 }
