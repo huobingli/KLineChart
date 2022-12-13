@@ -83,6 +83,15 @@ export default class TechnicalIndicatorPane extends Pane {
     })
   }
 
+  _yCustomAxisWidget (container, props) {
+    return new YAxisWidget({
+      container,
+      chartStore: props.chartStore,
+      yAxis: this._yCustomAxis,
+      paneId: props.id + 'custom'
+    })
+  }
+
   /**
    * 获取最小高度
    * @returns

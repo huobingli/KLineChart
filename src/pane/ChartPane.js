@@ -290,21 +290,24 @@ export default class ChartPane {
     const paneWidth = this._container.offsetWidth
     let mainWidth
     let yAxisWidth = Number.MIN_SAFE_INTEGER
+    let yCustomAxisWidth = Number.MIN_SAFE_INTEGER
     let yAxisOffsetLeft
     let mainOffsetLeft
     this._panes.forEach(pane => {
       yAxisWidth = Math.max(yAxisWidth, pane.yAxis().getSelfWidth())
+      yCustomAxisWidth = pane.yCustomAxis().getSelfWidth()
     })
-    if (yAxisWidth > paneWidth) {
+    if (yAxisWidth > paneWidth || yCustomAxisWidth > paneWidth) {
       yAxisWidth = paneWidth
+      yCustomAxisWidth = paneWidth
     }
     if (isOutside) {
-      mainWidth = paneWidth - yAxisWidth
+      mainWidth = paneWidth - yAxisWidth - yCustomAxisWidth
       if (isYAxisLeft) {
         yAxisOffsetLeft = 0
         mainOffsetLeft = yAxisWidth
       } else {
-        yAxisOffsetLeft = paneWidth - yAxisWidth
+        yAxisOffsetLeft = paneWidth - yAxisWidth - yCustomAxisWidth
         mainOffsetLeft = 0
       }
     } else {
@@ -313,7 +316,7 @@ export default class ChartPane {
       if (isYAxisLeft) {
         yAxisOffsetLeft = 0
       } else {
-        yAxisOffsetLeft = paneWidth - yAxisWidth
+        yAxisOffsetLeft = paneWidth - yAxisWidth - yCustomAxisWidth
       }
     }
 

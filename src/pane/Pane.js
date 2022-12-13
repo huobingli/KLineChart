@@ -26,6 +26,7 @@ export default class Pane {
     this._initElement()
     this._mainWidget = this._createMainWidget(this._element, props)
     this._yAxisWidget = this._createYAxisWidget(this._element, props)
+    this._yCustomAxisWidget = this._createYCustomAxisWidget(this._element, props)
   }
 
   _initBefore (props) {}
@@ -64,6 +65,14 @@ export default class Pane {
   _createYAxisWidget (container, props) {}
 
   /**
+   * 创建自定义y轴组件
+   * @param container
+   * @param props
+   * @private
+   */
+  _createYCustomAxisWidget (container, props) {}
+
+  /**
    * 获取容器
    * @param position
    * @returns
@@ -75,6 +84,9 @@ export default class Pane {
       }
       case ContainerPosition.YAXIS: {
         return this._yAxisWidget.container()
+      }
+      case ContainerPosition.YCUSTOMAXIS: {
+        return this._yCustomAxisWidget.container()
       }
       default: return this._element
     }
@@ -91,6 +103,7 @@ export default class Pane {
   setWidth (mainWidgetWidth, yAxisWidgetWidth) {
     this._mainWidget.setWidth(mainWidgetWidth)
     this._yAxisWidget && this._yAxisWidget.setWidth(yAxisWidgetWidth)
+    this._yCustomAxisWidget && this._yCustomAxisWidget.setWidth(yAxisWidgetWidth)
   }
 
   /**
@@ -108,11 +121,13 @@ export default class Pane {
     this._height = height
     this._mainWidget.setHeight(height)
     this._yAxisWidget && this._yAxisWidget.setHeight(height)
+    this._yCustomAxisWidget && this._yCustomAxisWidget.setHeight(height)
   }
 
   setOffsetLeft (mainWidgetOffsetLeft, yAxisWidgetOffsetLeft) {
     this._mainWidget.setOffsetLeft(mainWidgetOffsetLeft)
     this._yAxisWidget && this._yAxisWidget.setOffsetLeft(yAxisWidgetOffsetLeft)
+    this._yCustomAxisWidget && this._yCustomAxisWidget.setOffsetLeft(yAxisWidgetOffsetLeft)
   }
 
   layout () {
@@ -121,6 +136,7 @@ export default class Pane {
     }
     this._mainWidget.layout()
     this._yAxisWidget && this._yAxisWidget.layout()
+    this._yCustomAxisWidget && this._yCustomAxisWidget.layout()
   }
 
   /**
@@ -129,6 +145,7 @@ export default class Pane {
    */
   invalidate (level) {
     this._yAxisWidget && this._yAxisWidget.invalidate(level)
+    this._yCustomAxisWidget && this._yCustomAxisWidget.invalidate(level)
     this._mainWidget.invalidate(level)
   }
 
@@ -139,6 +156,8 @@ export default class Pane {
     let htmlId
     if (position === ContainerPosition.YAXIS) {
       htmlId = this._yAxisWidget && this._yAxisWidget.createHtml({ id, content, style })
+    } else if (position === ContainerPosition.YCUSTOMAXIS) {
+      htmlId = this._yCustomAxisWidget && this._yCustomAxisWidget.createHtml({ id, content, style })
     } else {
       htmlId = this._mainWidget.createHtml({ id, content, style })
     }
@@ -151,6 +170,7 @@ export default class Pane {
    */
   removeHtml (id) {
     this._yAxisWidget && this._yAxisWidget.removeHtml(id)
+    this._yCustomAxisWidget && this._yCustomAxisWidget.removeHtml(id)
     this._mainWidget.removeHtml(id)
   }
 
@@ -182,6 +202,7 @@ export default class Pane {
       this._mainWidget.getImage(includeOverlay),
       mainWidgetOffsetLeft, 0,
       mainWidgetWidth, mainWidgetHeight
+
     )
     if (this._yAxisWidget) {
       const yAxisWidgetElement = this._yAxisWidget.getElement()
@@ -194,6 +215,19 @@ export default class Pane {
         yAxisWidgetWidth, yAxisWidgetHeight
       )
     }
+
+    if (this._yCustomAxisWidget) {
+      const yAxisWidgetElement = this._yCustomAxisWidget.getElement()
+      const yAxisWidgetWidth = yAxisWidgetElement.offsetWidth
+      const yAxisWidgetHeight = yAxisWidgetElement.offsetHeight
+      const yAxisWidgetOffsetLeft = parseInt(yAxisWidgetElement.style.left, 10)
+      ctx.drawImage(
+        this._yCustomAxisWidget.getImage(includeOverlay),
+        yAxisWidgetOffsetLeft, 0,
+        yAxisWidgetWidth, yAxisWidgetHeight
+      )
+    }
+
     return canvas
   }
 

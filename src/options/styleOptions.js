@@ -408,11 +408,11 @@ const defaultYCustomAxis = {
   /**
    * y轴类型
    */
-  type: YAxisType.NORMAL,
+  type: YAxisType.PERCENTAGE,
   /**
    * 轴位置
    */
-  position: YAxisPosition.RIGHT,
+  position: YAxisPosition.LEFT,
   /**
    * 轴是否在内部
    */
@@ -448,13 +448,13 @@ const defaultYCustomAxis = {
     size: 1,
     length: 3,
     color: '#DDDDDD'
-  },
-  // "0轴" 位置
-  beginAxis: {
-    show: true,
-    color: '#DDDDDD',
-    size: 1
   }
+  // "0轴" 位置
+  // beginAxis: {
+  //   show: true,
+  //   color: '#DDDDDD',
+  //   size: 1
+  // }
 }
 
 const defaultCrosshair = {
