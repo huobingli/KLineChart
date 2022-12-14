@@ -20,11 +20,12 @@ import { renderHorizontalLine, renderVerticalLine, renderLine } from '../rendere
 import { isValid } from '../utils/typeChecks'
 
 export default class TechnicalIndicatorView extends View {
-  constructor (container, chartStore, xAxis, yAxis, paneId) {
+  constructor (container, chartStore, xAxis, yAxis, paneId, yCustomAxis) {
     super(container, chartStore)
     this._xAxis = xAxis
     this._yAxis = yAxis
     this._paneId = paneId
+    this._yCustomAxis = yCustomAxis
   }
 
   _draw () {
@@ -56,6 +57,10 @@ export default class TechnicalIndicatorView extends View {
         this._ctx.setLineDash([])
       }
       this._yAxis.ticks().forEach(tick => {
+        renderHorizontalLine(this._ctx, tick.y, 0, this._width)
+      })
+
+      this._yCustomAxis.ticks().forEach(tick => {
         renderHorizontalLine(this._ctx, tick.y, 0, this._width)
       })
     }
@@ -109,7 +114,8 @@ export default class TechnicalIndicatorView extends View {
           },
           styles,
           xAxis: this._xAxis,
-          yAxis: this._yAxis
+          yAxis: this._yAxis,
+          yCustomAxis: this._yCustomAxis
         })
         this._ctx.restore()
       }
