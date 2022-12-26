@@ -30,4 +30,8 @@ export default class CandlePane extends TechnicalIndicatorPane {
       paneId: props.id
     })
   }
+
+  _createYAxisWidgets (container, props) {
+
+  }
 }

@@ -63,7 +63,7 @@ export default class Pane {
    * @param props
    * @private
    */
-  _createYAxisWidget(container, props) { }
+  _createYAxisWidgets(container, props) { }
 
   /**
    * 获取容器

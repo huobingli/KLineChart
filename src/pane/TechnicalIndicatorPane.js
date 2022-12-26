@@ -24,6 +24,8 @@ export default class TechnicalIndicatorPane extends Pane {
     super(props)
     this._minHeight = 30
     this._initHeight(props)
+
+    this._yAxisList = []
   }
 
   _initBefore(props) {
@@ -33,7 +35,7 @@ export default class TechnicalIndicatorPane extends Pane {
     this._yAxis = this._createYAxis(props)
 
     // add yaxis
-    // this._yAxisArray = this.
+    // this._yAxisList.push(this._yAxis)
   }
 
   _initHeight(props) {
@@ -50,11 +52,23 @@ export default class TechnicalIndicatorPane extends Pane {
   }
 
   _createYAxis(props) {
-    return new YAxis(
+    return new YAxis(props.chartStore, false, props.id)
+    let yAxis = []
+    yAxis.push(new YAxis(
       props.chartStore,
       false,
       props.id
-    )
+    ))
+
+    return yAxis
+  }
+
+   // 增加一个Y轴
+   _addYAxis (props) {
+    console.log("add YAxis")
+    const yAxis = new YAxis(props.chartStore, true, props.id)
+
+    this.yAxisList.push(yAxis)
   }
 
   // yaxis 数组
@@ -63,7 +77,7 @@ export default class TechnicalIndicatorPane extends Pane {
       container,
       chartStore: props.chartStore,
       xAxis: props.xAxis,
-      yAxis: this._yAxis,
+      yAxis: this.yAxis,
       paneId: props.id
     })
   }
@@ -71,7 +85,7 @@ export default class TechnicalIndicatorPane extends Pane {
   // yaxis 数组
   _createYAxisWidgets(container, props) {
     const widgets = []
-    this._yAxis.forEach(axis => {
+    this._yAxisList.forEach(axis => {
       const widget = new YAxisWidget({
         container,
         chartStore: props.chartStore,
@@ -103,7 +117,10 @@ export default class TechnicalIndicatorPane extends Pane {
 
   setHeight(height) {
     super.setHeight(height)
-    this._yAxis.setHeight(height)
+    // this._yAxis.setHeight(height)
+    this._yAxisList.forEach(axis => {
+      axis.setHeight(height)
+    })
   }
 
   setMainWidgetWidth() {
@@ -114,7 +131,7 @@ export default class TechnicalIndicatorPane extends Pane {
   setWidth(mainWidgetWidth, yAxisWidgetWidth) {
     super.setWidth(mainWidgetWidth, yAxisWidgetWidth)
 
-    this._yAxis.forEach(yAxis => {
+    this._yAxisList.forEach(yAxis => {
       yAxis.setWidth(yAxisWidgetWidth)
     });
   }
