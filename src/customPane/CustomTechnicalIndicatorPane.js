@@ -92,8 +92,16 @@ export default class CustomTechnicalIndicatorPane extends CustomPane {
     this._yAxis.setHeight(height)
   }
 
+  setYAxisHeight (height) {
+    this._yAxis.setHeight(height)
+  }
+
   setWidth (mainWidgetWidth, yAxisWidgetWidth) {
     super.setWidth(mainWidgetWidth, yAxisWidgetWidth)
+    this._yAxis.setWidth(yAxisWidgetWidth)
+  }
+
+  setYAxisWidth (yAxisWidgetWidth) {
     this._yAxis.setWidth(yAxisWidgetWidth)
   }
 

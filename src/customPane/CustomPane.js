@@ -93,6 +93,14 @@ export default class CustomPane {
     this._yAxisWidget && this._yAxisWidget.setWidth(yAxisWidgetWidth)
   }
 
+  setMainWidth (mainWidgetWidth) {
+    this._mainWidget.setWidth(mainWidgetWidth)
+  }
+
+  setYAxisWidth (yAxisWidgetWidth) {
+    this._yAxisWidget.setWidth(yAxisWidgetWidth)
+  }
+
   /**
    * 获取高度
    */
@@ -107,6 +115,14 @@ export default class CustomPane {
   setHeight (height) {
     this._height = height
     this._mainWidget.setHeight(height)
+    this._yAxisWidget && this._yAxisWidget.setHeight(height)
+  }
+
+  setMainHeight (height) {
+    this._mainWidget.setHeight(height)
+  }
+
+  setYAxisHeight (height) {
     this._yAxisWidget && this._yAxisWidget.setHeight(height)
   }
 
