@@ -8,42 +8,42 @@ declare namespace klinecharts {
     volume?: number;
     turnover?: number;
   }
-  
+
   interface Precision {
     price: number;
     volume: number;
   }
-  
+
   interface Viewport {
     width?: number;
     height?: number;
     dataSpace?: number;
     barSpace?: number;
   }
-  
+
   interface DataSource {
     from?: number;
     to?: number;
     kLineDataList?: KLineData[];
     technicalIndicatorDataList?: any[];
   }
-  
+
   interface Crosshair extends Coordinate {
     paneId?: string;
     dataIndex?: number;
   }
-  
+
   export interface Coordinate {
     x?: number;
     y?: number;
   }
-  
+
   interface Point {
     timestamp?: number;
     dataIndex?: number;
     value?: number;
   }
-  
+
   interface OverlayEvent {
     id: number | string;
     points?: Point | Point[];
@@ -53,18 +53,18 @@ declare namespace klinecharts {
   type TechnicalIndicatorSeries = 'price' | 'volume' | 'normal';
 
   type TechnicalIndicatorPlotType = 'circle' | 'bar' | 'line';
-  
+
   interface TechnicalIndicatorPlotCallbackDataItem {
     kLineData?: KLineData;
     technicalIndicatorData?: any;
   }
-  
+
   interface TechnicalIndicatorPlotCallbackData {
     prev?: TechnicalIndicatorPlotCallbackDataItem;
     current?: TechnicalIndicatorPlotCallbackDataItem;
     next?: TechnicalIndicatorPlotCallbackDataItem;
   }
-  
+
   interface TechnicalIndicatorPlot {
     key: string;
     title?: string;
@@ -74,7 +74,7 @@ declare namespace klinecharts {
     isStroke?: (data: TechnicalIndicatorPlotCallbackData) => boolean;
     isDashed?: (data: TechnicalIndicatorPlotCallbackData) => boolean;
   }
-  
+
   interface TechnicalIndicator {
     name: string;
     shortName?: string;
@@ -85,9 +85,9 @@ declare namespace klinecharts {
     styles?: any;
     extendData?: any;
   }
-  
-  interface TechnicalIndicatorRenderDataSource extends DataSource {}
-  
+
+  interface TechnicalIndicatorRenderDataSource extends DataSource { }
+
   interface TechnicalIndicatorRenderParams {
     ctx: CanvasRenderingContext2D;
     dataSource: TechnicalIndicatorRenderDataSource;
@@ -96,7 +96,7 @@ declare namespace klinecharts {
     xAxis: any;
     yAxis: any;
   }
-  
+
   interface TechnicalIndicatorCreateTooltipParams {
     dataSource: DataSource;
     viewport: Viewport;
@@ -106,13 +106,13 @@ declare namespace klinecharts {
     yAxis: any;
     defaultStyles: any;
   }
-  
+
   interface TechnicalIndicatorTooltipDataItem {
     title: string;
     value: any;
     color?: string;
   }
-  
+
   interface TechnicalIndicatorTemplate extends TechnicalIndicator {
     calcTechnicalIndicator: (kLineDataList: KLineData[], options?: any) => any[] | Promise<any[]>;
     series?: TechnicalIndicatorSeries;
@@ -128,14 +128,14 @@ declare namespace klinecharts {
   type ShapeMode = 'normal' | 'weak_magnet' | 'strong_magnet';
 
   type ShapeElementType = 'line' | 'text' | 'continuous_line' | 'polygon' | 'arc';
-  
+
   interface ShapeDataSourceItem extends Coordinate {
     radius?: number;
     startAngle?: number;
     endAngle?: number;
     text?: string;
   }
-  
+
   interface ShapeDataSource {
     key?: string;
     type: ShapeElementType;
@@ -144,11 +144,11 @@ declare namespace klinecharts {
     styles?: any;
     dataSource: ShapeDataSourceItem[] | ShapeDataSourceItem[][];
   }
-  
+
   interface ShapeEvent extends OverlayEvent {
     step?: number;
   }
-  
+
   interface OverrideShape {
     id?: string;
     points?: Point[];
@@ -157,7 +157,7 @@ declare namespace klinecharts {
     mode?: ShapeMode;
     data?: any;
   }
-  
+
   interface Shape extends OverrideShape {
     name: string;
     onDrawStart?: (event: ShapeEvent) => void;
@@ -170,14 +170,14 @@ declare namespace klinecharts {
     onMouseLeave?: (event: ShapeEvent) => void;
     onRemove?: (event: ShapeEvent) => void;
   }
-  
+
   interface ShapeCheckOnParams {
     key: string;
     type: ShapeElementType;
     dataSource: ShapeDataSourceItem | ShapeDataSourceItem[];
     eventCoordinate: Coordinate;
   }
-  
+
   interface ShapeCreateDataSourceParams {
     step: number;
     mode: ShapeMode;
@@ -190,7 +190,7 @@ declare namespace klinecharts {
     yAxis: any;
     data: any;
   }
-  
+
   interface ShapeEventPressMoveParams {
     mode: ShapeMode;
     points: Point[];
@@ -199,7 +199,7 @@ declare namespace klinecharts {
     xAxis: any;
     yAxis: any;
   }
-  
+
   interface ShapeEventMoveDrawingParams {
     step: number;
     mode: ShapeMode;
@@ -208,7 +208,7 @@ declare namespace klinecharts {
     xAxis: any;
     yAxis: any;
   }
-  
+
   interface ShapeDrawExtendParams {
     ctx: CanvasRenderingContext2D;
     dataSource: ShapeDataSource[];
@@ -220,7 +220,7 @@ declare namespace klinecharts {
     yAxis: any;
     data: any;
   }
-  
+
   interface ShapeTemplate {
     name: string;
     totalStep: number;
@@ -236,7 +236,7 @@ declare namespace klinecharts {
     coordinate?: Coordinate;
     size?: number;
   }
-  
+
   interface AnnotationDrawParams {
     ctx: CanvasRenderingContext2D;
     point?: Point;
@@ -245,7 +245,7 @@ declare namespace klinecharts {
     isActive?: boolean;
     styles?: any;
   }
-  
+
   interface Annotation {
     point: Point;
     styles?: any;
@@ -285,14 +285,14 @@ declare namespace klinecharts {
     paneId?: string;
     absoluteYAxis?: boolean;
   }
-  
+
   interface HTML {
     id?: string,
     position?: 'content' | 'yAxis';
     style?: any;
     content: string | HTMLElement;
   }
-  
+
   type PictureType = 'png' | 'jpeg' | 'bmp';
 
   interface Chart {
@@ -375,11 +375,13 @@ declare namespace klinecharts {
 
   const extension: Extension;
   const utils: Utils;
-  
+
   function version(): string;
 
   function init(ds: HTMLDivElement | string, style?: any): Chart;
-  
+
+  function initCustom(ds: HTMLDivElement | string, style?: any): Chart;
+
   function dispose(dcs: HTMLDivElement | Chart | string): void;
 }
 

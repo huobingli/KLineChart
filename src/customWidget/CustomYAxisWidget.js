@@ -12,11 +12,16 @@
  * limitations under the License.
  */
 
-import extension from './store/extension'
-import { version, init, initCustom, dispose, utils } from './core'
+import CustomWidget from './CustomWidget'
+import CustomYAxisView from '../CustomView/CustomYAxisView'
+import CustomYAxisOverlayView from '../CustomView/CustomYAxisOverlayView'
 
-const klinecharts = {
-  version, init, initCustom, dispose, utils, extension
+export default class CustomYAxisWidget extends CustomWidget {
+  _createMainView (container, props) {
+    return new CustomYAxisView(container, props.chartStore, props.yAxis, props.paneId)
+  }
+
+  _createOverlayView (container, props) {
+    return new CustomYAxisOverlayView(container, props.chartStore, props.yAxis, props.paneId)
+  }
 }
-
-export default klinecharts

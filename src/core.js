@@ -13,6 +13,7 @@
  */
 
 import Chart from './Chart'
+import CustomChart from './CustomChart'
 import { logError, logTag, logWarn } from './utils/logger'
 import {
   clone, merge, isString, isNumber, isValid, isObject, isArray, isFunction, isBoolean
@@ -68,6 +69,36 @@ function init (ds, style = {}) {
   return chart
 }
 
+function initCustom (ds, style = {}) {
+  logTag()
+  const errorMessage = 'The chart cannot be initialized correctly. Please check the parameters. The chart container cannot be null and child elements need to be added!!!'
+  let dom
+  if (!ds) {
+    logError('', '', errorMessage)
+    return null
+  }
+  if (isString(ds)) {
+    dom = document.getElementById(ds)
+  } else {
+    dom = ds
+  }
+  if (!dom) {
+    logError('', '', errorMessage)
+    return null
+  }
+  let chart = instances[dom.chartId || '']
+  if (chart) {
+    logWarn('', '', 'The chart has been initialized on the dom！！！')
+    return chart
+  }
+  const id = `${CHART_NAME_PREFIX}${chartBaseId++}`
+  chart = new CustomChart(dom, style)
+  chart.id = id
+  dom.chartId = id
+  instances[id] = chart
+  return chart
+}
+
 /**
  * 销毁
  * @param dcs
@@ -106,5 +137,5 @@ const utils = {
 }
 
 export {
-  version, init, dispose, utils
+  version, init, initCustom, dispose, utils
 }
