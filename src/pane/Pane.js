@@ -18,20 +18,21 @@ import { createElement } from '../utils/element'
 import ContainerPosition from '../enum/ContainerPosition'
 
 export default class Pane {
-  constructor (props) {
+  constructor(props) {
     this._height = -1
     this._container = props.container
     this._chartStore = props.chartStore
     this._initBefore(props)
     this._initElement()
     this._mainWidget = this._createMainWidget(this._element, props)
-    this._yAxisWidget = this._createYAxisWidget(this._element, props)
-    this._yCustomAxisWidget = this._createYCustomAxisWidget(this._element, props)
+
+    // widget数组
+    this._yAxisWidget = this._createYAxisWidgets(this._element, props)
   }
 
-  _initBefore (props) {}
+  _initBefore(props) { }
 
-  _initElement () {
+  _initElement() {
     this._element = createElement('div', {
       width: '100%',
       margin: '0',
@@ -54,7 +55,7 @@ export default class Pane {
    * @param props
    * @private
    */
-  _createMainWidget (container, props) {}
+  _createMainWidget(container, props) { }
 
   /**
    * 创建y轴组件
@@ -62,31 +63,20 @@ export default class Pane {
    * @param props
    * @private
    */
-  _createYAxisWidget (container, props) {}
-
-  /**
-   * 创建自定义y轴组件
-   * @param container
-   * @param props
-   * @private
-   */
-  _createYCustomAxisWidget (container, props) {}
+  _createYAxisWidget(container, props) { }
 
   /**
    * 获取容器
    * @param position
    * @returns
    */
-  container (position) {
+  container(position) {
     switch (position) {
       case ContainerPosition.CONTENT: {
         return this._mainWidget.container()
       }
       case ContainerPosition.YAXIS: {
         return this._yAxisWidget.container()
-      }
-      case ContainerPosition.YCUSTOMAXIS: {
-        return this._yCustomAxisWidget.container()
       }
       default: return this._element
     }
@@ -96,20 +86,22 @@ export default class Pane {
    * 获取宽度
    * @returns {number}
    */
-  width () {
+  width() {
     return this._element.offsetWidth
   }
 
-  setWidth (mainWidgetWidth, yAxisWidgetWidth) {
+  setWidth(mainWidgetWidth) {
     this._mainWidget.setWidth(mainWidgetWidth)
-    this._yAxisWidget && this._yAxisWidget.setWidth(yAxisWidgetWidth)
-    this._yCustomAxisWidget && this._yCustomAxisWidget.setWidth(yAxisWidgetWidth)
   }
 
+  // 设置单根y轴的宽度
+  setYAxisWidth(yAxis, yAxisWidgetWidth) {
+    // this._yAxisWidget && this._yAxisWidget.setWidth(yAxisWidgetWidth)
+  }
   /**
    * 获取高度
    */
-  height () {
+  height() {
     return this._height
   }
 
@@ -117,47 +109,56 @@ export default class Pane {
    * 设置临时高度
    * @param height
    */
-  setHeight (height) {
+  setHeight(height) {
     this._height = height
     this._mainWidget.setHeight(height)
-    this._yAxisWidget && this._yAxisWidget.setHeight(height)
-    this._yCustomAxisWidget && this._yCustomAxisWidget.setHeight(height)
   }
 
-  setOffsetLeft (mainWidgetOffsetLeft, yAxisWidgetOffsetLeft) {
+  setYAxisWidghtHeight(yAxisWidght, height) {
+    // yAxisWidght && yAxisWidght.setHeight(height)
+  }
+
+  setOffsetLeft(mainWidgetOffsetLeft) {
     this._mainWidget.setOffsetLeft(mainWidgetOffsetLeft)
-    this._yAxisWidget && this._yAxisWidget.setOffsetLeft(yAxisWidgetOffsetLeft)
-    this._yCustomAxisWidget && this._yCustomAxisWidget.setOffsetLeft(yAxisWidgetOffsetLeft)
+
+    this._yAxisWidget.forEach(widget => {
+      widget && widget.setOffsetLeft(offsetLeft)
+    });
   }
 
-  layout () {
+  setYAxisWidghtOffsetLeft(yAxisWidght, offsetLeft) {
+  }
+
+  layout() {
     if (this._element.offsetHeight !== this._height) {
       this._element.style.height = `${this._height}px`
     }
     this._mainWidget.layout()
-    this._yAxisWidget && this._yAxisWidget.layout()
-    this._yCustomAxisWidget && this._yCustomAxisWidget.layout()
+
+    this._yAxisWidget.forEach(widget => {
+      widget && widget.layout()
+    });
   }
 
   /**
    * 刷新
    * @param level
    */
-  invalidate (level) {
-    this._yAxisWidget && this._yAxisWidget.invalidate(level)
-    this._yCustomAxisWidget && this._yCustomAxisWidget.invalidate(level)
+  invalidate(level) {
     this._mainWidget.invalidate(level)
+
+    this._yAxisWidget.forEach(widget => {
+      widget && widget.invalidate(level)
+    });
   }
 
   /**
    * 创建html元素
    */
-  createHtml ({ id, content, style, position }) {
+  createHtml({ id, content, style, position }) {
     let htmlId
     if (position === ContainerPosition.YAXIS) {
       htmlId = this._yAxisWidget && this._yAxisWidget.createHtml({ id, content, style })
-    } else if (position === ContainerPosition.YCUSTOMAXIS) {
-      htmlId = this._yCustomAxisWidget && this._yCustomAxisWidget.createHtml({ id, content, style })
     } else {
       htmlId = this._mainWidget.createHtml({ id, content, style })
     }
@@ -168,9 +169,8 @@ export default class Pane {
    * 移除html元素
    * @param id
    */
-  removeHtml (id) {
+  removeHtml(id) {
     this._yAxisWidget && this._yAxisWidget.removeHtml(id)
-    this._yCustomAxisWidget && this._yCustomAxisWidget.removeHtml(id)
     this._mainWidget.removeHtml(id)
   }
 
@@ -179,7 +179,7 @@ export default class Pane {
    * @param includeOverlay
    * @return {HTMLCanvasElement}
    */
-  getImage (includeOverlay) {
+  getImage(includeOverlay) {
     const width = this._element.offsetWidth
     const height = this._element.offsetHeight
     const canvas = createElement('canvas', {
@@ -202,7 +202,6 @@ export default class Pane {
       this._mainWidget.getImage(includeOverlay),
       mainWidgetOffsetLeft, 0,
       mainWidgetWidth, mainWidgetHeight
-
     )
     if (this._yAxisWidget) {
       const yAxisWidgetElement = this._yAxisWidget.getElement()
@@ -215,26 +214,13 @@ export default class Pane {
         yAxisWidgetWidth, yAxisWidgetHeight
       )
     }
-
-    if (this._yCustomAxisWidget) {
-      const yAxisWidgetElement = this._yCustomAxisWidget.getElement()
-      const yAxisWidgetWidth = yAxisWidgetElement.offsetWidth
-      const yAxisWidgetHeight = yAxisWidgetElement.offsetHeight
-      const yAxisWidgetOffsetLeft = parseInt(yAxisWidgetElement.style.left, 10)
-      ctx.drawImage(
-        this._yCustomAxisWidget.getImage(includeOverlay),
-        yAxisWidgetOffsetLeft, 0,
-        yAxisWidgetWidth, yAxisWidgetHeight
-      )
-    }
-
     return canvas
   }
 
   /**
    * 销毁
    */
-  destroy () {
+  destroy() {
     this._container.removeChild(this._element)
   }
 }

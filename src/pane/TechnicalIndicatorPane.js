@@ -16,24 +16,27 @@ import Pane from './Pane'
 import TechnicalIndicatorWidget from '../widget/TechnicalIndicatorWidget'
 import YAxisWidget from '../widget/YAxisWidget'
 import YAxis from '../component/axis/YAxis'
-import YCustomAxis from '../component/axis/YCustomAxis'
 
 import { isValid } from '../utils/typeChecks'
 
 export default class TechnicalIndicatorPane extends Pane {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this._minHeight = 30
     this._initHeight(props)
   }
 
-  _initBefore (props) {
+  _initBefore(props) {
     this._id = props.id
+
+    // 需要根据配置里
     this._yAxis = this._createYAxis(props)
-    this._yCustomAxis = this._createYCustomAxis(props)
+
+    // add yaxis
+    // this._yAxisArray = this.
   }
 
-  _initHeight (props) {
+  _initHeight(props) {
     const height = props.height
     const minHeight = props.minHeight
     if (isValid(minHeight)) {
@@ -46,7 +49,7 @@ export default class TechnicalIndicatorPane extends Pane {
     }
   }
 
-  _createYAxis (props) {
+  _createYAxis(props) {
     return new YAxis(
       props.chartStore,
       false,
@@ -54,49 +57,39 @@ export default class TechnicalIndicatorPane extends Pane {
     )
   }
 
-  _createYCustomAxis (props) {
-    return new YCustomAxis(
-      props.chartStore,
-      false,
-      props.id
-    )
-  }
-
-  _createMainWidget (container, props) {
+  // yaxis 数组
+  _createMainWidget(container, props) {
     return new TechnicalIndicatorWidget({
       container,
       chartStore: props.chartStore,
       xAxis: props.xAxis,
       yAxis: this._yAxis,
-      paneId: props.id,
-      yCustomAxis: this._yCustomAxis
+      paneId: props.id
     })
   }
 
-  _createYAxisWidget (container, props) {
-    return new YAxisWidget({
-      container,
-      chartStore: props.chartStore,
-      yAxis: this._yAxis,
-      paneId: props.id,
-      yCustomAxis: this._yCustomAxis
-    })
-  }
+  // yaxis 数组
+  _createYAxisWidgets(container, props) {
+    const widgets = []
+    this._yAxis.forEach(axis => {
+      const widget = new YAxisWidget({
+        container,
+        chartStore: props.chartStore,
+        yAxis: axis,
+        paneId: props.id
+      })
 
-  _yCustomAxisWidget (container, props) {
-    return new YAxisWidget({
-      container,
-      chartStore: props.chartStore,
-      yAxis: this._yCustomAxis,
-      paneId: props.id + 'custom'
-    })
+      widgets.push(widget)
+    });
+
+    return widgets
   }
 
   /**
    * 获取最小高度
    * @returns
    */
-  minHeight () {
+  minHeight() {
     return this._minHeight
   }
 
@@ -104,35 +97,37 @@ export default class TechnicalIndicatorPane extends Pane {
    * 设置最小高度
    * @param minHeight
    */
-  setMinHeight (minHeight) {
+  setMinHeight(minHeight) {
     this._minHeight = minHeight
   }
 
-  setHeight (height) {
+  setHeight(height) {
     super.setHeight(height)
     this._yAxis.setHeight(height)
-    this._yCustomAxis.setHeight(height)
   }
 
-  setWidth (mainWidgetWidth, yAxisWidgetWidth) {
+  setMainWidgetWidth() {
+
+  }
+
+  // 这里的y宽度会存在差异，直接一起设置
+  setWidth(mainWidgetWidth, yAxisWidgetWidth) {
     super.setWidth(mainWidgetWidth, yAxisWidgetWidth)
-    this._yAxis.setWidth(yAxisWidgetWidth)
-    this._yCustomAxis.setWidth(yAxisWidgetWidth)
+
+    this._yAxis.forEach(yAxis => {
+      yAxis.setWidth(yAxisWidgetWidth)
+    });
   }
 
   /**
    * 获取id
    * @returns {string}
    */
-  id () {
+  id() {
     return this._id
   }
 
-  yAxis () {
+  yAxis() {
     return this._yAxis
-  }
-
-  yCustomAxis () {
-    return this._yCustomAxis
   }
 }

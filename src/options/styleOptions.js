@@ -396,67 +396,6 @@ const defaultYAxis = {
   }
 }
 
-const defaultYCustomAxis = {
-  /**
-     * 是否显示整个轴
-     */
-  show: true,
-  /**
-   * 宽度
-   */
-  width: null,
-  /**
-   * y轴类型
-   */
-  type: YAxisType.PERCENTAGE,
-  /**
-   * 轴位置
-   */
-  position: YAxisPosition.LEFT,
-  /**
-   * 轴是否在内部
-   */
-  inside: false,
-  /**
-   * 轴是否反转
-   */
-  reverse: false,
-  /**
-   * 轴线配置
-   */
-  axisLine: {
-    show: true,
-    color: '#DDDDDD',
-    size: 1
-  },
-
-  /**
-   * tick文字
-   */
-  tickText: {
-    show: true,
-    color: '#76808F',
-    size: 12,
-    family: 'Helvetica Neue',
-    weight: 'normal',
-    paddingLeft: 3,
-    paddingRight: 6
-  },
-  // tick线
-  tickLine: {
-    show: true,
-    size: 1,
-    length: 3,
-    color: '#DDDDDD'
-  }
-  // "0轴" 位置
-  // beginAxis: {
-  //   show: true,
-  //   color: '#DDDDDD',
-  //   size: 1
-  // }
-}
-
 const defaultCrosshair = {
   show: true,
   horizontal: {
@@ -644,6 +583,5 @@ export const defaultStyleOptions = {
   crosshair: defaultCrosshair,
   shape: defaultShape,
   annotation: defaultAnnotation,
-  tag: defaultTag,
-  yCustomAxis: defaultYCustomAxis
+  tag: defaultTag
 }

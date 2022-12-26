@@ -39,7 +39,6 @@ function version () {
  * @returns {Chart}
  */
 function init (ds, style = {}) {
-  console.log('init begin')
   logTag()
   const errorMessage = 'The chart cannot be initialized correctly. Please check the parameters. The chart container cannot be null and child elements need to be added!!!'
   let dom

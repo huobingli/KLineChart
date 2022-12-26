@@ -18,8 +18,7 @@
 const ContainerPosition = {
   ROOT: 'root',
   CONTENT: 'content',
-  YAXIS: 'yAxis',
-  YCUSTOMAXIS: 'yCustomAxis'
+  YAXIS: 'yAxis'
 }
 
 export default ContainerPosition

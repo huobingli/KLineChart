@@ -351,8 +351,6 @@ declare namespace klinecharts {
     unsubscribeAction(type: ChartActionType, callback?: (params: any) => void): void;
     getConvertPictureUrl(includeOverlay?: boolean, type?: PictureType, backgroundColor?: string): string;
     resize(): void;
-    // y Axis
-    setYAxisBegin(): void;
   }
 
   interface Utils {
