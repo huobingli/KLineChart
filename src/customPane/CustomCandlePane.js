@@ -12,11 +12,11 @@
  * limitations under the License.
  */
 
-import TechnicalIndicatorPane from './CustomTechnicalIndicatorPane'
+import CustomTechnicalIndicatorPane from './CustomTechnicalIndicatorPane'
 import CustomCandleWidget from '../customWidget/CustomCandleWidget'
 import CustomYAxis from '../customComponent/axis/CustomYAxis'
 
-export default class CustomCandlePane extends TechnicalIndicatorPane {
+export default class CustomCandlePane extends CustomTechnicalIndicatorPane {
   _createYAxis (props) {
     return new CustomYAxis(props.chartStore, true, props.id)
   }

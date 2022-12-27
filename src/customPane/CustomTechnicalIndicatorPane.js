@@ -24,11 +24,13 @@ export default class CustomTechnicalIndicatorPane extends CustomPane {
     super(props)
     this._minHeight = 30
     this._initHeight(props)
+    // this._yAxisList = []
   }
 
   _initBefore (props) {
     this._id = props.id
     this._yAxis = this._createYAxis(props)
+    this._yAxisList.push(this._yAxis)
   }
 
   _initHeight (props) {

@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-import TechnicalIndicatorOverlayView from './CustomTechnicalIndicatorOverlayView'
+import CustomTechnicalIndicatorOverlayView from './CustomTechnicalIndicatorOverlayView'
 import { isFunction, isObject, isArray, isValid } from '../utils/typeChecks'
 import { formatBigNumber, formatDate, formatPrecision, formatValue } from '../utils/format'
 import { calcTextWidth, createFont } from '../utils/canvas'
@@ -20,7 +20,7 @@ import { TooltipShowType, YAxisPosition } from '../options/styleOptions'
 import { renderFillRoundRect, renderStrokeRoundRect } from '../renderer/rect'
 import { renderText } from '../renderer/text'
 
-export default class CandleOverlayView extends TechnicalIndicatorOverlayView {
+export default class CustomCandleOverlayView extends CustomTechnicalIndicatorOverlayView {
   _drawTooltip (crosshair, techs) {
     const styleOptions = this._chartStore.styleOptions()
     const candleOptions = styleOptions.candle

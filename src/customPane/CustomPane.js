@@ -22,6 +22,7 @@ export default class CustomPane {
     this._height = -1
     this._container = props.container
     this._chartStore = props.chartStore
+    this._yAxisList = []
     this._initBefore(props)
     this._initElement()
     this._mainWidget = this._createMainWidget(this._element, props)
