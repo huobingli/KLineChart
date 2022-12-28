@@ -15,10 +15,15 @@
 import CustomTechnicalIndicatorPane from './CustomTechnicalIndicatorPane'
 import CustomCandleWidget from '../customWidget/CustomCandleWidget'
 import CustomYAxis from '../customComponent/axis/CustomYAxis'
+import CustomYCustomAxis from '../customComponent/axis/CustomYCustomAxis'
 
 export default class CustomCandlePane extends CustomTechnicalIndicatorPane {
   _createYAxis (props) {
     return new CustomYAxis(props.chartStore, true, props.id)
+  }
+
+  _createYCustomAxis (props) {
+    return new CustomYCustomAxis(props.chartStore, true, props.id)
   }
 
   _createMainWidget (container, props) {
@@ -27,6 +32,7 @@ export default class CustomCandlePane extends CustomTechnicalIndicatorPane {
       chartStore: props.chartStore,
       xAxis: props.xAxis,
       yAxis: this._yAxis,
+      yCustom: this._yCustomAxis,
       paneId: props.id
     })
   }

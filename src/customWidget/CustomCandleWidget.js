@@ -18,10 +18,10 @@ import CustomTechnicalIndicatorWidget from './CustomTechnicalIndicatorWidget'
 
 export default class CustomCandleWidget extends CustomTechnicalIndicatorWidget {
   _createMainView (container, props) {
-    return new CustomCandleView(container, props.chartStore, props.xAxis, props.yAxis, props.paneId)
+    return new CustomCandleView(container, props.chartStore, props.xAxis, props.yAxis, props.yCustomAxis, props.paneId)
   }
 
   _createOverlayView (container, props) {
-    return new CustomCandleOverlayView(container, props.chartStore, props.xAxis, props.yAxis, props.paneId)
+    return new CustomCandleOverlayView(container, props.chartStore, props.xAxis, props.yAxis, props.yCustomAxis, props.paneId)
   }
 }

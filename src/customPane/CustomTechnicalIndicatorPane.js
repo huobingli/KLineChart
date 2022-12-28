@@ -16,6 +16,7 @@ import CustomPane from './CustomPane'
 import CustomTechnicalIndicatorWidget from '../CustomWidget/CustomTechnicalIndicatorWidget'
 import CustomYAxisWidget from '../CustomWidget/CustomYAxisWidget'
 import CustomYAxis from '../CustomComponent/axis/CustomYAxis'
+import CustomYCustomAxis from '../CustomComponent/axis/CustomYCustomAxis'
 
 import { isValid } from '../utils/typeChecks'
 
@@ -30,6 +31,7 @@ export default class CustomTechnicalIndicatorPane extends CustomPane {
   _initBefore (props) {
     this._id = props.id
     this._yAxis = this._createYAxis(props)
+    this._yCustomAxis = this._createYCustomAxis(props)
     this._yAxisList.push(this._yAxis)
   }
 
@@ -54,12 +56,21 @@ export default class CustomTechnicalIndicatorPane extends CustomPane {
     )
   }
 
+  _createYCustomAxis (props) {
+    return new CustomYCustomAxis(
+      props.chartStore,
+      false,
+      props.id
+    )
+  }
+
   _createMainWidget (container, props) {
     return new CustomTechnicalIndicatorWidget({
       container,
       chartStore: props.chartStore,
       xAxis: props.xAxis,
       yAxis: this._yAxis,
+      yCustomAxis: this._yCustomAxis,
       paneId: props.id
     })
   }
@@ -70,6 +81,15 @@ export default class CustomTechnicalIndicatorPane extends CustomPane {
       chartStore: props.chartStore,
       yAxis: this._yAxis,
       paneId: props.id
+    })
+  }
+
+  _createYCustomAxisWidget (container, props) {
+    return new CustomYAxisWidget({
+      container,
+      chartStore: props.chartStore,
+      yAxis: this._yCustomAxis,
+      paneId: props.id + "custom"
     })
   }
 
@@ -98,13 +118,23 @@ export default class CustomTechnicalIndicatorPane extends CustomPane {
     this._yAxis.setHeight(height)
   }
 
+  setYCustomAxisHeight (height) {
+    this._yCustomAxis.setHeight(height)
+  }
+
   setWidth (mainWidgetWidth, yAxisWidgetWidth) {
     super.setWidth(mainWidgetWidth, yAxisWidgetWidth)
     this._yAxis.setWidth(yAxisWidgetWidth)
+    // this._yCustomAxis.setWidth(yAxisWidgetWidth)
   }
 
   setYAxisWidth (yAxisWidgetWidth) {
     this._yAxis.setWidth(yAxisWidgetWidth)
+  }
+
+  setYCustomAxisWidth (yAxisWidgetWidth) {
+    super.setYCustomAxisWidth(yAxisWidgetWidth)
+    this._yCustomAxis.setWidth(yAxisWidgetWidth)
   }
 
   /**
@@ -117,5 +147,9 @@ export default class CustomTechnicalIndicatorPane extends CustomPane {
 
   yAxis () {
     return this._yAxis
+  }
+
+  yCustomAxis () {
+    return this._yCustomAxis
   }
 }

@@ -30,7 +30,8 @@ export default class CustomYAxisView extends CustomView {
   }
 
   _draw () {
-    const yAxisOptions = this._chartStore.styleOptions().yAxis
+    // const yAxisOptions = this._chartStore.styleOptions().yAxis
+    const yAxisOptions = this._paneId === 'candle_pane' ? this._chartStore.styleOptions().yAxis : this._chartStore.styleOptions().yCustomAxis
     if (yAxisOptions.show) {
       this._drawAxisLine(yAxisOptions)
       this._drawTickLines(yAxisOptions)

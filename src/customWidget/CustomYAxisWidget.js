@@ -18,10 +18,10 @@ import CustomYAxisOverlayView from '../CustomView/CustomYAxisOverlayView'
 
 export default class CustomYAxisWidget extends CustomWidget {
   _createMainView (container, props) {
-    return new CustomYAxisView(container, props.chartStore, props.yAxis, props.paneId)
+    return new CustomYAxisView(container, props.chartStore, props.yAxis, props.yCustomAxis, props.paneId)
   }
 
   _createOverlayView (container, props) {
-    return new CustomYAxisOverlayView(container, props.chartStore, props.yAxis, props.paneId)
+    return new CustomYAxisOverlayView(container, props.chartStore, props.yAxis, props.yCustomAxis, props.paneId)
   }
 }

@@ -22,10 +22,11 @@ import { calcTextWidth, createFont } from '../utils/canvas'
 import { renderText } from '../renderer/text'
 
 export default class CustomTechnicalIndicatorOverlayView extends CustomView {
-  constructor (container, chartStore, xAxis, yAxis, paneId) {
+  constructor (container, chartStore, xAxis, yAxis, yCustomAxis, paneId) {
     super(container, chartStore)
     this._xAxis = xAxis
     this._yAxis = yAxis
+    this._yCustomAxis = yCustomAxis
     this._paneId = paneId
   }
 

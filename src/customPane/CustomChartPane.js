@@ -206,8 +206,13 @@ export default class CustomChartPane {
       let shouldMeasureWidth = false
       this._panes.forEach((pane) => {
         const should = pane.yAxis().computeAxis()
+        const shouldCustom = pane.yCustomAxis().computeAxis()
         if (should) {
           shouldMeasureWidth = should
+        }
+
+        if (shouldCustom) {
+          shouldMeasureWidth = shouldCustom
         }
       })
       this.adjustPaneViewport(false, shouldMeasureWidth, true)
@@ -254,6 +259,7 @@ export default class CustomChartPane {
     let contentTop = candlePaneHeight
     let contentBottom = candlePaneHeight
     this._panes.get(CANDLE_PANE_ID).setHeight(candlePaneHeight)
+    this._panes.get(CANDLE_PANE_ID).setYCustomAxisHeight(candlePaneHeight)
     this._chartHeight[CANDLE_PANE_ID] = candlePaneHeight
     this._panes.forEach(pane => {
       if (pane.id() !== CANDLE_PANE_ID) {
@@ -283,21 +289,24 @@ export default class CustomChartPane {
     const paneWidth = this._container.offsetWidth
     let mainWidth
     let yAxisWidth = Number.MIN_SAFE_INTEGER
+    let yCustomAxisWidth = Number.MIN_SAFE_INTEGER
     let yAxisOffsetLeft
     let mainOffsetLeft
     this._panes.forEach(pane => {
       yAxisWidth = Math.max(yAxisWidth, pane.yAxis().getSelfWidth())
+      yCustomAxisWidth = pane.yCustomAxis().getSelfWidth()
     })
-    if (yAxisWidth > paneWidth) {
+    if (yAxisWidth > paneWidth || yCustomAxisWidth > paneWidth) {
       yAxisWidth = paneWidth
+      yCustomAxisWidth = paneWidth
     }
     if (isOutside) {
-      mainWidth = paneWidth - yAxisWidth
+      mainWidth = paneWidth - yAxisWidth - yCustomAxisWidth
       if (isYAxisLeft) {
         yAxisOffsetLeft = 0
         mainOffsetLeft = yAxisWidth
       } else {
-        yAxisOffsetLeft = paneWidth - yAxisWidth
+        yAxisOffsetLeft = paneWidth - yAxisWidth - yCustomAxisWidth
         mainOffsetLeft = 0
       }
     } else {
@@ -306,7 +315,7 @@ export default class CustomChartPane {
       if (isYAxisLeft) {
         yAxisOffsetLeft = 0
       } else {
-        yAxisOffsetLeft = paneWidth - yAxisWidth
+        yAxisOffsetLeft = paneWidth - yAxisWidth - yCustomAxisWidth
       }
     }
 
@@ -318,7 +327,9 @@ export default class CustomChartPane {
 
     this._panes.forEach((pane, paneId) => {
       pane.setWidth(mainWidth, yAxisWidth)
+      pane.setYCustomAxisWidth(yCustomAxisWidth)
       pane.setOffsetLeft(mainOffsetLeft, yAxisOffsetLeft)
+      pane.setOffYCustomsetLeft(paneWidth - yCustomAxisWidth)
       const separator = this._separators.get(paneId)
       separator && separator.setSize(mainOffsetLeft, mainWidth)
     })
@@ -354,6 +365,11 @@ export default class CustomChartPane {
         const adjust = pane.yAxis().computeAxis(shouldForceComputeAxis)
         if (!isAdjust) {
           isAdjust = adjust
+        }
+
+        const adjustCustom = pane.yCustomAxis().computeAxis(shouldForceComputeAxis)
+        if (!isAdjust) {
+          isAdjust = adjustCustom
         }
       })
     }
