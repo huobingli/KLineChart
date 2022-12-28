@@ -30,6 +30,7 @@ export default class CustomAxis {
     this._realMaxValue = 0
     this._realRange = 0
     this._ticks = []
+    this._begin = 0
     this._initMeasureCanvas()
   }
 
@@ -62,6 +63,14 @@ export default class CustomAxis {
 
   setHeight (height) {
     this._height = height
+  }
+
+  begin () {
+    return this._begin
+  }
+
+  setBegin (begin) {
+    this._begin = begin
   }
 
   /**
