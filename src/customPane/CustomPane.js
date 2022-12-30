@@ -27,7 +27,9 @@ export default class CustomPane {
     this._initElement()
     this._mainWidget = this._createMainWidget(this._element, props)
     this._yAxisWidget = this._createYAxisWidget(this._element, props)
-    this._yRightAxisWidget = this._createYAxisWidget(this._element, props)
+    const props2 = props
+    props2.id = props.id + '_custom'
+    this._yRightAxisWidget = this._createYAxisWidget(this._element, props2)
   }
 
   _initBefore (props) {}

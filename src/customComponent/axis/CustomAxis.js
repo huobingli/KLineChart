@@ -29,7 +29,9 @@ export default class CustomAxis {
     this._realMinValue = 0
     this._realMaxValue = 0
     this._realRange = 0
+    this._begin = 0
     this._ticks = []
+    this._ticksPre = []
     this._initMeasureCanvas()
   }
 
@@ -64,12 +66,24 @@ export default class CustomAxis {
     this._height = height
   }
 
+  begin () {
+    return this._begin
+  }
+
+  setBegin (begin) {
+    this._begin = begin
+  }
+
   /**
    * 获取ticks
    * @returns {[]|*[]}
    */
   ticks () {
     return this._ticks
+  }
+
+  ticksPre () {
+    return this._ticksPre
   }
 
   /**
@@ -88,6 +102,7 @@ export default class CustomAxis {
       this._cacheMinValue = minMax.min
       this._cacheMaxValue = minMax.max
       this._ticks = this._optimalTicks(this._computeTicks())
+      this._ticksPre = this._optimalTicksPre(this._ticks)
       return true
     }
     return false
@@ -148,4 +163,6 @@ export default class CustomAxis {
       interval, precision
     }
   }
+
+  _optimalTicksPre (ticks) {}
 }

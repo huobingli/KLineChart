@@ -117,9 +117,16 @@ export default class CustomYAxisView extends CustomView {
     this._ctx.textBaseline = 'middle'
     this._ctx.font = createFont(tickText.size, tickText.weight, tickText.family)
     this._ctx.fillStyle = tickText.color
-    this._yAxis.ticks().forEach(tick => {
-      this._ctx.fillText(tick.v, labelX, tick.y)
-    })
+    if (this._paneId === 'candle_pane_custom') {
+      this._yAxis.ticksPre().forEach(tick => {
+        this._ctx.fillText(tick.v, labelX, tick.y)
+      })
+    } else {
+      this._yAxis.ticks().forEach(tick => {
+        this._ctx.fillText(tick.v, labelX, tick.y)
+      })
+    }
+
     this._ctx.textAlign = 'left'
   }
 

@@ -255,6 +255,43 @@ export default class CustomYAxis extends CustomAxis {
     return optimalTicks
   }
 
+  _optimalTicksPre(ticks) {
+    // this._ticks
+    const ticksPre = []
+    // const fromData = (this._chartStore.visibleDataList()[0] || {}).data || {}
+    const begin = 1664.90
+    ticks.forEach(({ v }) => {
+      let value
+      let y = this._innerConvertToPixel(+v)
+
+
+      value = `${formatPrecision((v - begin)/begin * 100, 2)}%`
+      // switch (yAxisType) {
+      //   case YAxisType.PERCENTAGE: {
+      //     value = `${formatPrecision(v, 2)}%`
+      //     break
+      //   }
+      //   case YAxisType.LOG: {
+      //     y = this._innerConvertToPixel(log10(v))
+      //     value = formatPrecision(v, precision)
+      //     break
+      //   }
+      //   default: {
+      //     value = formatPrecision(v, precision)
+      //     if (shouldFormatBigNumber) {
+      //       value = formatBigNumber(value)
+      //     }
+      //     break
+      //   }
+      // }
+      // if (y > textHeight && y < this._height - textHeight && ((validY && (Math.abs(validY - y) > textHeight * 2)) || !validY)) {
+      ticksPre.push({ v: value, y })
+      //   validY = y
+      // }
+    })
+    return ticksPre
+  }
+
   /**
    * 内部值转换成坐标
    * @param value
