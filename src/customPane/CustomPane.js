@@ -27,6 +27,7 @@ export default class CustomPane {
     this._initElement()
     this._mainWidget = this._createMainWidget(this._element, props)
     this._yAxisWidget = this._createYAxisWidget(this._element, props)
+    this._yRightAxisWidget = this._createYAxisWidget(this._element, props)
   }
 
   _initBefore (props) {}
@@ -92,6 +93,7 @@ export default class CustomPane {
   setWidth (mainWidgetWidth, yAxisWidgetWidth) {
     this._mainWidget.setWidth(mainWidgetWidth)
     this._yAxisWidget && this._yAxisWidget.setWidth(yAxisWidgetWidth)
+    this._yRightAxisWidget && this._yRightAxisWidget.setWidth(yAxisWidgetWidth)
   }
 
   setMainWidth (mainWidgetWidth) {
@@ -117,6 +119,7 @@ export default class CustomPane {
     this._height = height
     this._mainWidget.setHeight(height)
     this._yAxisWidget && this._yAxisWidget.setHeight(height)
+    this._yRightAxisWidget && this._yRightAxisWidget.setHeight(height)
   }
 
   setMainHeight (height) {
@@ -130,6 +133,7 @@ export default class CustomPane {
   setOffsetLeft (mainWidgetOffsetLeft, yAxisWidgetOffsetLeft) {
     this._mainWidget.setOffsetLeft(mainWidgetOffsetLeft)
     this._yAxisWidget && this._yAxisWidget.setOffsetLeft(yAxisWidgetOffsetLeft)
+    this._yRightAxisWidget && this._yRightAxisWidget.setOffsetLeft(this._mainWidget._width + mainWidgetOffsetLeft)
   }
 
   layout () {
@@ -138,6 +142,7 @@ export default class CustomPane {
     }
     this._mainWidget.layout()
     this._yAxisWidget && this._yAxisWidget.layout()
+    this._yRightAxisWidget && this._yRightAxisWidget.layout()
   }
 
   /**

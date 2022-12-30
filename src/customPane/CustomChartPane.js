@@ -292,12 +292,12 @@ export default class CustomChartPane {
       yAxisWidth = paneWidth
     }
     if (isOutside) {
-      mainWidth = paneWidth - yAxisWidth
+      mainWidth = paneWidth - yAxisWidth * 2
       if (isYAxisLeft) {
         yAxisOffsetLeft = 0
         mainOffsetLeft = yAxisWidth
       } else {
-        yAxisOffsetLeft = paneWidth - yAxisWidth
+        yAxisOffsetLeft = paneWidth - yAxisWidth * 2
         mainOffsetLeft = 0
       }
     } else {
@@ -306,7 +306,7 @@ export default class CustomChartPane {
       if (isYAxisLeft) {
         yAxisOffsetLeft = 0
       } else {
-        yAxisOffsetLeft = paneWidth - yAxisWidth
+        yAxisOffsetLeft = paneWidth - yAxisWidth * 2
       }
     }
 
