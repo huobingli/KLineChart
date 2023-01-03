@@ -117,7 +117,19 @@ export default class CustomYAxis extends CustomAxis {
       minMaxArray[0] = 0
       minMaxArray[1] = 10
     }
-    return { min: minMaxArray[0], max: minMaxArray[1], precision, specifyMin: minValue, specifyMax: maxValue, techGap }
+
+    let minV = minMaxArray[0]
+    let maxV = minMaxArray[1]
+    const yAxisOptions = this._chartStore.styleOptions().yAxis
+    const begin = yAxisOptions.begin
+    if (yAxisOptions.type == YAxisType.BOTH) {
+      const absMax = Math.max(Math.abs(Math.abs(minV) - begin), Math.abs(Math.abs(maxV)-begin))
+
+      minV = begin-absMax
+      maxV = begin+absMax
+    }
+
+    return { min: minV, max: maxV, precision, specifyMin: minValue, specifyMax: maxValue, techGap }
   }
 
   _optimalMinMax ({ min, max, precision, specifyMin, specifyMax, techGap }) {
@@ -256,39 +268,18 @@ export default class CustomYAxis extends CustomAxis {
   }
 
   _optimalTicksPre(ticks) {
-    // this._ticks
+    const yAxisOptions = this._chartStore.styleOptions().yAxis
     const ticksPre = []
-    // const fromData = (this._chartStore.visibleDataList()[0] || {}).data || {}
-    const begin = 1664.90
-    ticks.forEach(({ v }) => {
-      let value
-      let y = this._innerConvertToPixel(+v)
+    if (yAxisOptions.type === YAxisType.BOTH) {
+      const begin = yAxisOptions.begin
+      ticks.forEach(({ v }) => {
+        let value
+        let y = this._innerConvertToPixel(+v)
+        value = `${formatPrecision((v - begin)/begin * 100, 2)}%`
+        ticksPre.push({ v: value, y })
+      })
+    }
 
-
-      value = `${formatPrecision((v - begin)/begin * 100, 2)}%`
-      // switch (yAxisType) {
-      //   case YAxisType.PERCENTAGE: {
-      //     value = `${formatPrecision(v, 2)}%`
-      //     break
-      //   }
-      //   case YAxisType.LOG: {
-      //     y = this._innerConvertToPixel(log10(v))
-      //     value = formatPrecision(v, precision)
-      //     break
-      //   }
-      //   default: {
-      //     value = formatPrecision(v, precision)
-      //     if (shouldFormatBigNumber) {
-      //       value = formatBigNumber(value)
-      //     }
-      //     break
-      //   }
-      // }
-      // if (y > textHeight && y < this._height - textHeight && ((validY && (Math.abs(validY - y) > textHeight * 2)) || !validY)) {
-      ticksPre.push({ v: value, y })
-      //   validY = y
-      // }
-    })
     return ticksPre
   }
 

@@ -45,7 +45,8 @@ export const YAxisPosition = {
 export const YAxisType = {
   NORMAL: 'normal',
   PERCENTAGE: 'percentage',
-  LOG: 'log'
+  LOG: 'log',
+  BOTH: 'both'
 }
 
 /**
@@ -369,6 +370,7 @@ const defaultYAxis = {
   /**
    * 轴线配置
    */
+  begin: 0,
   axisLine: {
     show: true,
     color: '#DDDDDD',

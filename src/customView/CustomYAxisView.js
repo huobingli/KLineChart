@@ -13,7 +13,7 @@
  */
 
 import CustomView from './CustomView'
-import { YAxisType } from '../options/styleOptions'
+import { YAxisPosition, YAxisType } from '../options/styleOptions'
 import { TechnicalIndicatorPlotType } from '../CustomComponent/technicalindicator/CustomTechnicalIndicator'
 import { calcTextWidth, createFont } from '../utils/canvas'
 import { renderHorizontalLine, renderVerticalLine } from '../renderer/line'
@@ -48,10 +48,20 @@ export default class CustomYAxisView extends CustomView {
     this._ctx.strokeStyle = axisLine.color
     this._ctx.lineWidth = axisLine.size
     let x
-    if (this._yAxis.isFromYAxisZero()) {
-      x = 0
-    } else {
-      x = this._width - 1
+
+    if (yAxisOptions.type == YAxisType.BOTH) {
+      if (this._paneId === 'candle_pane_custom') {
+        x = 0
+      } else {
+        x = this._width - 1
+      }
+    }
+    else {
+      if (this._yAxis.isFromYAxisZero()) {
+        x = 0
+      } else {
+        x = this._width - 1
+      }
     }
     renderVerticalLine(this._ctx, x, 0, this._height)
   }
@@ -68,19 +78,30 @@ export default class CustomYAxisView extends CustomView {
 
     let startX
     let endX
-    if (this._yAxis.isFromYAxisZero()) {
-      startX = 0
-      if (yAxisOptions.axisLine.show) {
-        startX += yAxisOptions.axisLine.size
+    if (yAxisOptions.type == YAxisType.BOTH) {
+      if (this._paneId === 'candle_pane_custom') {
+        startX = 0
+        endX = startX + tickLineLength
+      } else {
+        startX = this._width
+        endX = startX - tickLineLength
       }
-      endX = startX + tickLineLength
     } else {
-      startX = this._width
-      if (yAxisOptions.axisLine.show) {
-        startX -= yAxisOptions.axisLine.size
+      if (this._yAxis.isFromYAxisZero()) {
+        startX = 0
+        if (yAxisOptions.axisLine.show) {
+          startX += yAxisOptions.axisLine.size
+        }
+        endX = startX + tickLineLength
+      } else {
+        startX = this._width
+        if (yAxisOptions.axisLine.show) {
+          startX -= yAxisOptions.axisLine.size
+        }
+        endX = startX - tickLineLength
       }
-      endX = startX - tickLineLength
     }
+
     this._yAxis.ticks().forEach(tick => {
       renderHorizontalLine(this._ctx, tick.y, startX, endX)
     })
