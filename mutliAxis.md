@@ -24,3 +24,9 @@
 
 axis begin
 默认的起始值，x轴或者y轴
+
+
+problem
+1、没有到15：00时，没有底下的数据？ range需要固定，不能按照传入数据来计算，可能需要增加图标的设置来方便内部进行判断
+2、纵坐标数据切分？如何保证昨收价格在中间，可能需要修改_computeInterval
+3、both类型中candle_pane_custom 需要优化名称，比如candle_pane_left&candle_pane_right?

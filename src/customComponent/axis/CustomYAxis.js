@@ -17,7 +17,7 @@ import { CandleType, YAxisPosition, YAxisType } from '../../options/styleOptions
 import { isNumber, isValid } from '../../utils/typeChecks'
 import { calcTextWidth, createFont } from '../../utils/canvas'
 import { formatBigNumber, formatPrecision } from '../../utils/format'
-import { log10, index10 } from '../../utils/number'
+import { log10, index10, getPrecision, round } from '../../utils/number'
 
 export default class CustomYAxis extends CustomAxis {
   constructor (chartStore, isCandleYAxis, paneId) {
@@ -123,10 +123,10 @@ export default class CustomYAxis extends CustomAxis {
     const yAxisOptions = this._chartStore.styleOptions().yAxis
     const begin = yAxisOptions.begin
     if (yAxisOptions.type == YAxisType.BOTH) {
-      const absMax = Math.max(Math.abs(Math.abs(minV) - begin), Math.abs(Math.abs(maxV)-begin))
+      const absMax = +formatPrecision(Math.max(Math.abs(Math.abs(minV) - begin), Math.abs(Math.abs(maxV)-begin)))
 
-      minV = begin-absMax
-      maxV = begin+absMax
+      minV = +formatPrecision(begin-absMax)
+      maxV = +formatPrecision(begin+absMax)
     }
 
     return { min: minV, max: maxV, precision, specifyMin: minValue, specifyMax: maxValue, techGap }
@@ -195,8 +195,11 @@ export default class CustomYAxis extends CustomAxis {
     }
     let range = Math.abs(maxValue - minValue)
     // 保证每次图形绘制上下都留间隙
-    minValue = minValue - range * bottomRate
-    maxValue = maxValue + range * topRate
+    if (yAxisType !== YAxisType.BOTH)
+    {
+      minValue = minValue - range * bottomRate
+      maxValue = maxValue + range * topRate
+    }
     range = Math.abs(maxValue - minValue)
     let realMinValue
     let realMaxValue
@@ -456,5 +459,54 @@ export default class CustomYAxis extends CustomAxis {
   convertToNicePixel (value) {
     const y = this.convertToPixel(value)
     return Math.round(Math.max(this._height * 0.05, Math.min(y, this._height * 0.98)))
+  }
+
+  // 纵轴需要
+  _computeInterval (range) {
+    let interval
+    let precision
+    if (this.yAxisType() == YAxisType.BOTH) {
+      interval = range / 8.0
+      precision = getPrecision(interval)
+    } else {
+      interval = nice(range / 8.0)
+      precision = getPrecision(interval)
+    }
+
+    return {
+      interval, precision
+    }
+  }
+
+  _computeTicks() {
+    const ticks = []
+    if (this._range >= 0) {
+      let intervalPrecision
+      let interval
+      let precision
+      let first
+      let last
+      intervalPrecision = this._computeInterval(this._realRange)
+      interval = intervalPrecision.interval
+      precision = intervalPrecision.precision
+      if (this.yAxisType() == YAxisType.BOTH) {
+        first = round(this._realMinValue / interval * interval, precision)
+        last = round(this._realMaxValue / interval * interval, precision)
+      } else {
+        first = round(Math.ceil(this._realMinValue / interval) * interval, precision)
+        last = round(Math.floor(this._realMaxValue / interval) * interval, precision)
+      }
+      let n = 0
+      let f = first
+
+      if (interval !== 0) {
+        while (f <= last) {
+          ticks[n] = { v: f.toFixed(precision) }
+          ++n
+          f += interval
+        }
+      }
+    }
+    return ticks
   }
 }
